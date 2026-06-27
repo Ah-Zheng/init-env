@@ -18,15 +18,9 @@
 5. **安裝與啟用實用外掛套件**：
    * **內建外掛**：
      * `git`：提供豐富的 Git 快捷指令（如 `gst`, `gco`, `gp`）。
-     * `z`：快速目錄導航，透過輸入部分名稱進行模糊跳轉。
-     * `sudo`：雙擊 `Esc` 快速在上一行指令前補上 `sudo`。
-     * `extract`：萬能解壓縮，輸入 `x <壓縮檔>` 即可解壓。
-     * `colored-man-pages`：帶有語法高亮的 `man` 說明文件。
-     * `copypath` / `copyfile`：複製路徑或檔案內容至剪貼簿。
    * **第三方外掛**：
      * `zsh-autosuggestions`：自動提示指令（依據歷史紀錄）。
      * `zsh-syntax-highlighting`：終端機指令語法即時高亮。
-     * `you-should-use`：如果您打出完整指令而沒用 Alias 縮寫，會自動發出提醒。
 6. **自動修改 `.zshrc`**：
    * 將主題設為 `powerlevel10k/powerlevel10k`。
    * 將外掛清單寫入 `plugins=(...)`。
@@ -63,10 +57,7 @@
 * `la`：顯示包含隱藏檔案的所有檔案。
 * `lt`：以樹狀圖 (Tree) 形式列出檔案目錄。
 
-### 2. 縮寫小幫手：`you-should-use`
-試著輸入 `git status`，它執行完後會提示您：「You should use: gst」。
-
-### 3. 如何重新設定主題樣式？
+### 2. 如何重新設定主題樣式？
 若您之後想改變終端機風格，隨時在終端機輸入：
 ```bash
 p10k configure

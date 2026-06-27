@@ -100,14 +100,7 @@ else
     echo "[✓] zsh-syntax-highlighting 外掛已安裝。"
 fi
 
-# 4.3 zsh-you-should-use (提醒你使用別名 / Alias 提醒)
-YSU_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/you-should-use"
-if [ ! -d "$YSU_DIR" ]; then
-    echo "[*] 開始安裝 you-should-use 外掛..."
-    git clone https://github.com/MichaelAquilina/zsh-you-should-use.git "$YSU_DIR"
-else
-    echo "[✓] you-should-use 外掛已安裝。"
-fi
+
 
 # ------------------------------------------------------------------------------
 # 5. 配置 .zshrc 設定檔
@@ -140,14 +133,14 @@ else
 fi
 
 # 5.2 更新 plugins (外掛清單) 陣列
-# 包含內建的 git, z, sudo, extract, colored-man-pages 與第三方 autosuggestions, syntax-highlighting, you-should-use
+# 僅保留 git, zsh-autosuggestions, zsh-syntax-highlighting
 if grep -q "^plugins=(" "$ZSHRC"; then
     echo "[*] 正在將新外掛加入現有的 plugins 陣列中..."
     current_plugins=$(grep "^plugins=(" "$ZSHRC" | sed -E 's/plugins=\((.*)\)/\1/')
     new_plugins="$current_plugins"
     
     # 檢查並追加外掛清單
-    for plugin in git z zsh-autosuggestions zsh-syntax-highlighting you-should-use sudo extract colored-man-pages; do
+    for plugin in git zsh-autosuggestions zsh-syntax-highlighting; do
         if [[ ! " $current_plugins " =~ " $plugin " ]]; then
             new_plugins="$new_plugins $plugin"
         fi
@@ -161,7 +154,7 @@ if grep -q "^plugins=(" "$ZSHRC"; then
     fi
 else
     echo "[*] 找不到 plugins 設定，直接建立完整的 plugins 陣列..."
-    echo "plugins=(git z zsh-autosuggestions zsh-syntax-highlighting you-should-use sudo extract colored-man-pages)" >> "$ZSHRC"
+    echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)" >> "$ZSHRC"
 fi
 
 # 5.3 新增 eza 別名 (Aliases) 到 .zshrc

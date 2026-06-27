@@ -10,7 +10,7 @@
 
 ### 1. [Zsh 終端機設定與美化 (zsh/)](./zsh/README.md)
 * **包含檔案**：[install_zsh_p10k.sh](./zsh/install_zsh_p10k.sh)
-* **功能簡介**：自動化安裝 Zsh、Oh My Zsh、Powerlevel10k 主題，並啟用多個實用外掛（如 `z` 快速導航、自動提示、語法高亮）與現代化工具 `eza`。
+* **功能簡介**：自動化安裝 Zsh、Oh My Zsh、Powerlevel10k 主題，並啟用實用外掛（自動提示、語法高亮）與現代化工具 `eza`。
 
 ### 2. [Git 基礎配置與別名 (git/)](./git/README.md)
 * **包含檔案**：[setup_git.sh](./git/setup_git.sh)
