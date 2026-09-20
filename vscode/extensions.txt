@@ -1,0 +1,23 @@
+# ==============================================================================
+# VS Code Insiders 擴充套件清單 (Extensions)
+# 說明：每行記錄一個 Extension ID，執行 ./vscode/install_extensions.sh 時將自動安裝。
+# 支援 # 開頭的整行註解或行尾註解，空白行會被自動忽略。
+# ==============================================================================
+
+# 語言與中文化
+ms-ceintl.vscode-language-pack-zh-hant  # 繁體中文語言套件 (Traditional Chinese Language Pack)
+
+# 語法支援與開發工具
+vue.volar                               # Vue 官方支援套件 (Vue Language Features / Volar)
+typescriptteam.native-preview           # TypeScript 語言支援預覽 (Native Preview)
+xabikos.javascriptsnippets              # JavaScript (ES6) 程式碼片段速查
+dbaeumer.vscode-eslint                  # ESLint 語法檢查與修正
+
+# 開發輔助與專案管理
+alefragnani.project-manager             # 專案管理工具 (Project Manager)
+ritwickdey.liveserver                   # 本地即時網頁預覽伺服器 (Live Server)
+
+# 編輯器視覺美化與格式輔助
+johnpapa.winteriscoming                 # Winter is Coming 主題色彩
+oderwat.indent-rainbow                  # 縮排彩虹色彩標示 (indent-rainbow)
+shardulm94.trailing-spaces              # 行末多餘空白高亮標示 (Trailing Spaces)

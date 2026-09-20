@@ -22,6 +22,8 @@
 3. **VS Code Insiders 終端機指令 (CLI) 設定**：
    * 在 `~/.local/bin` 底下建立 `code-insiders` 的軟連結 (Symlink)，使您能夠直接在終端機中透過 `code-insiders .` 或縮寫 `ci .` 來用 VS Code 開啟當前資料夾。
 
+> [!NOTE]
+> VS Code Insiders 的擴充套件 (Extensions) 已獨立至最外層的 [vscode/](../vscode/README.md) 模組進行統一管理與安裝。
 
 ---
 
@@ -41,13 +43,12 @@ chmod +x ./brew/install.sh
 
 ## 後續擴充方式
 
-如果您有其他想安裝的應用程式（例如 Slack, Google Chrome, Docker 等），您可以直接編輯 [Brewfile](./Brewfile)，並在底下新增對應的行：
+如果您有其他想安裝的應用程式（例如 Slack, Google Chrome 等），您可以直接編輯 [Brewfile](./Brewfile)，並在底下新增對應的行：
 
 ```ruby
 # 範例：新增 Slack 與 Chrome
 cask "slack"
 cask "google-chrome"
-cask "docker"
 ```
 
 修改完後重新執行 `./brew/install.sh` 即可自動增量安裝。

@@ -20,7 +20,7 @@ chmod +x bootstrap.sh
 ```
 
 ### 步驟 3：在選單中操作
-* **切換勾選狀態**：輸入選項數字（例如 `1`、`2` 或 `3`）並按下 **Enter** 鍵。這只會切換該項目的「勾選/取消勾選」狀態，**此時並不會執行安裝**。
+* **切換勾選狀態**：輸入選項數字（例如 `1`、`2`、`3` 或 `4`）並按下 **Enter** 鍵。這只會切換該項目的「勾選/取消勾選」狀態，**此時並不會執行安裝**。
 * **開始執行安裝**：當您勾選好所有想安裝的項目後，輸入 `y` 或 `Y` 並按下 **Enter** 鍵，系統便會依照順序執行所有被勾選的腳本。
 * **退出選單**：輸入 `q` 或 `Q` 並按下 **Enter** 鍵即可直接退出。
 
@@ -32,13 +32,17 @@ chmod +x bootstrap.sh
 
 ### 1. [Homebrew 與軟體/CLI 工具安裝 (brew/)](./brew/README.md)
 * **包含檔案**：[install.sh](./brew/install.sh)、[Brewfile](./brew/Brewfile)
-* **功能簡介**：自動化安裝 Homebrew，並透過 `Brewfile` 批次裝好 `iTerm2`、`VS Code Insiders`、`OrbStack` 與 `Antigravity CLI`，同時建立 `code-insiders` (ci) 的終端機指令連結。
+* **功能簡介**：自動化安裝 Homebrew，並透過 `Brewfile` 批次裝好 `iTerm2`、`VS Code Insiders`、`OrbStack` 與 `Antigravity CLI`，同時建立 `code-insiders` 終端機指令連結。
 
-### 2. [Zsh 終端機設定與美化 (zsh/)](./zsh/README.md)
+### 2. [VS Code Insiders 擴充套件安裝 (vscode/)](./vscode/README.md)
+* **包含檔案**：[install_extensions.sh](./vscode/install_extensions.sh)、[extensions.txt](./vscode/extensions.txt)
+* **功能簡介**：讀取擴充套件清單，透過 VS Code Insiders 專屬 CLI (`code-insiders`) 自動批次安裝常用外掛（繁中語系、Vue、ESLint、主題等）。
+
+### 3. [Zsh 終端機設定與美化 (zsh/)](./zsh/README.md)
 * **包含檔案**：[install_zsh_p10k.sh](./zsh/install_zsh_p10k.sh)
 * **功能簡介**：自動化安裝 Zsh、Oh My Zsh、Powerlevel10k 主題，並啟用常用外掛（自動提示、語法高亮）與現代化工具 `eza`。
 
-### 3. [Git 基礎配置與別名 (git/)](./git/README.md)
+### 4. [Git 基礎配置與別名 (git/)](./git/README.md)
 * **包含檔案**：[setup_git.sh](./git/setup_git.sh)
 * **功能簡介**：配置全域 `user.name`、`user.email`，並設定常用快捷指令別名（如 `git cm` 替代 `git commit -m`），內附撤銷第一個 commit 的常見錯誤排除方式。
 
