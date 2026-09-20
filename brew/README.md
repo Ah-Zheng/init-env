@@ -1,11 +1,11 @@
-# Homebrew 與 GUI 軟體自動化安裝 (Homebrew & Apps Setup)
+# Homebrew 與軟體/CLI 工具自動化安裝 (Homebrew & Apps Setup)
 
-此資料夾包含自動化安裝 macOS 套件管理器 **Homebrew**，以及透過 Homebrew 快速安裝 **iTerm2** 與 **Visual Studio Code - Insiders** 應用程式的配置。
+此資料夾包含自動化安裝 macOS 套件管理器 **Homebrew**，以及透過 Homebrew 快速安裝 **iTerm2**、**Visual Studio Code - Insiders**、**OrbStack** 與 **Antigravity CLI** 等工具與應用程式的配置。
 
 ## 包含檔案
 
 * **安裝腳本**：[install.sh](./install.sh) - 自動安裝 Homebrew 並執行 `Brewfile` 配置。
-* **軟體清單**：[Brewfile](./Brewfile) - 紀錄需要安裝的 GUI 應用程式 (Casks) 列表。
+* **軟體清單**：[Brewfile](./Brewfile) - 紀錄需要安裝的應用程式與 CLI 工具 (Casks) 列表。
 
 ---
 
@@ -13,12 +13,15 @@
 
 1. **安裝 Homebrew**：
    * 自動偵測晶片架構（Apple Silicon 或 Intel）並自動配置對應的環境變數至 `~/.zprofile` 中。
-2. **自動安裝 GUI 軟體**：
+2. **自動安裝軟體與 CLI 工具**：
    * 讀取同目錄下的 `Brewfile`，批次下載並安裝：
      * **iTerm2** (macOS 專用最強終端機替代品)
      * **VS Code Insiders** (VS Code 預覽/開發版)
+     * **OrbStack** (極速、輕量級的 Docker Desktop 替代方案)
+     * **Antigravity CLI** (Google Antigravity 終端機代理程式介面，提供 `agy` 指令)
 3. **VS Code Insiders 終端機指令 (CLI) 設定**：
    * 在 `~/.local/bin` 底下建立 `code-insiders` 的軟連結 (Symlink)，使您能夠直接在終端機中透過 `code-insiders .` 或縮寫 `ci .` 來用 VS Code 開啟當前資料夾。
+
 
 ---
 

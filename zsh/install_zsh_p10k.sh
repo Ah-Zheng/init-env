@@ -138,7 +138,7 @@ if grep -q "^plugins=(" "$ZSHRC"; then
     echo "[*] 正在將新外掛加入現有的 plugins 陣列中..."
     current_plugins=$(grep "^plugins=(" "$ZSHRC" | sed -E 's/plugins=\((.*)\)/\1/')
     new_plugins="$current_plugins"
-    
+
     # 檢查並追加外掛清單
     for plugin in git zsh-autosuggestions zsh-syntax-highlighting; do
         if [[ ! " $current_plugins " =~ " $plugin " ]]; then
@@ -146,7 +146,7 @@ if grep -q "^plugins=(" "$ZSHRC"; then
         fi
     done
     new_plugins=$(echo "$new_plugins" | xargs)
-    
+
     if [[ "$OSTYPE" == "darwin"* ]]; then
         sed -i '' "s/^plugins=(.*/plugins=($new_plugins)/" "$ZSHRC"
     else
@@ -171,6 +171,36 @@ if command -v eza &> /dev/null; then
 fi
 EOF
 fi
+
+# ------------------------------------------------------------------------------
+# 5.4 配置 VS Code / VS Code Insiders 終端機字型 (避免 P10k 圖示破圖)
+# ------------------------------------------------------------------------------
+echo "[*] 正在為 VS Code / VS Code Insiders 配置終端機字型 (MesloLGS NF)..."
+python3 -c "
+import json, os
+paths = [
+    os.path.expanduser('~/Library/Application Support/Code/User/settings.json'),
+    os.path.expanduser('~/Library/Application Support/Code - Insiders/User/settings.json')
+]
+for p in paths:
+    dir_name = os.path.dirname(p)
+    if not os.path.exists(dir_name):
+        continue
+    settings = {}
+    if os.path.exists(p):
+        try:
+            with open(p, 'r') as f:
+                settings = json.load(f)
+        except Exception:
+            settings = {}
+    settings['terminal.integrated.fontFamily'] = 'MesloLGS NF'
+    try:
+        with open(p, 'w') as f:
+            json.dump(settings, f, indent=4)
+        print(f'[✓] 已成功配置 {p} 的終端機字型')
+    except Exception as e:
+        print(f'[!] 無法寫入 {p}: {e}')
+"
 
 # ------------------------------------------------------------------------------
 # 6. 將預設 Shell 切換成 Zsh

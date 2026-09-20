@@ -1,2 +1,4 @@
 cask "iterm2"
-cask "visual-studio-code-insiders"
+cask "visual-studio-code@insiders"
+cask "orbstack"
+cask "antigravity-cli"
