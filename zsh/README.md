@@ -25,6 +25,7 @@
    * 將主題設為 `powerlevel10k/powerlevel10k`。
    * 將外掛清單寫入 `plugins=(...)`。
    * 為 `eza` 註冊快捷指令別名（將 `ls`、`ll`、`la`、`lt` 對應到帶有 Icon 且按資料夾置前排列的 eza 輸出）。
+   * 配置 **AI Skills 自動同步 Hook**（每次開啟終端機時自動將 Obsidian 內的 Skills 軟連結同步至 `~/.gemini/config/skills`，並註冊 `sync-skills` 快捷指令）。
    * 自動備份原有的 `.zshrc` 檔案（備份檔檔名為 `.zshrc.backup.時間戳記`）。
 7. **配置 VS Code / VS Code Insiders 終端機字型**：自動在編輯器設定檔中套用 `MesloLGS NF`，防止終端機圖示破圖。
 8. **切換預設 Shell**：如果預設 Shell 不是 Zsh，將自動為您切換。

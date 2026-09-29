@@ -172,8 +172,26 @@ fi
 EOF
 fi
 
+# 5.4 新增 AI Skills 自動同步設定到 .zshrc (支援 Antigravity CLI & Gemini CLI)
+if ! grep -q "AI_SKILLS_DIR" "$ZSHRC"; then
+    echo "[*] 正在為 AI Skills 設定自動同步 Hook 與別名..."
+    cat << 'EOF' >> "$ZSHRC"
+
+# ==============================================================================
+# AI Skills 自動同步設定 (支援 Antigravity CLI & Gemini CLI)
+# ==============================================================================
+export AI_SKILLS_DIR="$HOME/Documents/ObsidianVault/AI相關/skills"
+alias sync-skills='bash "$AI_SKILLS_DIR/sync-skills.sh"'
+
+# 每次開啟終端機時在背景自動檢查並同步 Skills (耗時小於 0.05 秒，完全不影響啟動速度)
+if [ -f "$AI_SKILLS_DIR/sync-skills.sh" ]; then
+    bash "$AI_SKILLS_DIR/sync-skills.sh" --quiet &
+fi
+EOF
+fi
+
 # ------------------------------------------------------------------------------
-# 5.4 配置 VS Code / VS Code Insiders 終端機字型 (避免 P10k 圖示破圖)
+# 5.5 配置 VS Code / VS Code Insiders 終端機字型 (避免 P10k 圖示破圖)
 # ------------------------------------------------------------------------------
 echo "[*] 正在為 VS Code / VS Code Insiders 配置終端機字型 (MesloLGS NF)..."
 python3 -c "
