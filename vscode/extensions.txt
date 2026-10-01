@@ -21,3 +21,7 @@ ritwickdey.liveserver                   # 本地即時網頁預覽伺服器 (Liv
 johnpapa.winteriscoming                 # Winter is Coming 主題色彩
 oderwat.indent-rainbow                  # 縮排彩虹色彩標示 (indent-rainbow)
 shardulm94.trailing-spaces              # 行末多餘空白高亮標示 (Trailing Spaces)
+bierner.markdown-mermaid                # Mermaid 圖表預覽
+
+# Git 輔助工具
+eamodio.gitlens                         # GitLens — Git supercharged 

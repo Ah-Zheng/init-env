@@ -11,7 +11,7 @@ set -e
 # 1. 定義可選的腳本選項名稱
 OPTIONS=(
     "安裝 Homebrew 與軟體/CLI 工具 (brew/)"
-    "安裝 VS Code Insiders 擴充套件 (vscode/)"
+    "安裝 VS Code Insiders 擴充套件與設定 (vscode/)"
     "設定 Zsh 終端機與 Powerlevel10k 主題 (zsh/)"
     "配置 Git 使用者資訊與常用別名 (git/)"
 )
@@ -106,9 +106,9 @@ if [ "${STATES[0]}" -eq 1 ]; then
     echo "----------------------------------------------------"
 fi
 
-# 5.2 執行 VS Code Insiders 擴充套件安裝
+# 5.2 執行 VS Code Insiders 擴充套件與設定安裝
 if [ "${STATES[1]}" -eq 1 ]; then
-    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：安裝 VS Code Insiders 擴充套件..."
+    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：安裝 VS Code Insiders 擴充套件與偏好設定..."
     chmod +x ./vscode/install_extensions.sh
     ./vscode/install_extensions.sh
     CURRENT_STEP=$((CURRENT_STEP+1))

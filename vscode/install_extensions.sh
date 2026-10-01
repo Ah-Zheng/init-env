@@ -71,3 +71,16 @@ done < "$EXTENSIONS_FILE"
 echo "===================================================="
 echo "[✓] VS Code Insiders 擴充套件安裝完畢！(成功: ${SUCCESS_COUNT}/${TOTAL_COUNT})"
 echo "===================================================="
+
+# ------------------------------------------------------------------------------
+# 3. 配置 VS Code / VS Code Insiders 偏好設定 (如 editor.fontSize 與 window.zoomLevel)
+# ------------------------------------------------------------------------------
+SETTINGS_SCRIPT="$(dirname "$0")/setup_settings.sh"
+if [ -x "$SETTINGS_SCRIPT" ]; then
+    echo ""
+    "$SETTINGS_SCRIPT"
+elif [ -f "$(dirname "$0")/configure_settings.py" ]; then
+    echo ""
+    python3 "$(dirname "$0")/configure_settings.py"
+fi
+
