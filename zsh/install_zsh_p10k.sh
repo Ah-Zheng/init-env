@@ -176,31 +176,7 @@ fi
 # 5.5 配置 VS Code / VS Code Insiders 終端機字型 (避免 P10k 圖示破圖)
 # ------------------------------------------------------------------------------
 echo "[*] 正在為 VS Code / VS Code Insiders 配置終端機字型 (MesloLGS NF)..."
-python3 -c "
-import json, os
-paths = [
-    os.path.expanduser('~/Library/Application Support/Code/User/settings.json'),
-    os.path.expanduser('~/Library/Application Support/Code - Insiders/User/settings.json')
-]
-for p in paths:
-    dir_name = os.path.dirname(p)
-    if not os.path.exists(dir_name):
-        continue
-    settings = {}
-    if os.path.exists(p):
-        try:
-            with open(p, 'r') as f:
-                settings = json.load(f)
-        except Exception:
-            settings = {}
-    settings['terminal.integrated.fontFamily'] = 'MesloLGS NF'
-    try:
-        with open(p, 'w') as f:
-            json.dump(settings, f, indent=4)
-        print(f'[✓] 已成功配置 {p} 的終端機字型')
-    except Exception as e:
-        print(f'[!] 無法寫入 {p}: {e}')
-"
+python3 "$(dirname "$0")/../vscode/configure_settings.py" --terminal-font-only "MesloLGS NF"
 
 # ------------------------------------------------------------------------------
 # 6. 將預設 Shell 切換成 Zsh

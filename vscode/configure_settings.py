@@ -50,18 +50,24 @@ def update_settings(file_path: str, new_settings: Dict[str, object]) -> bool:
 
 
 def configure_vscode_settings(
-    font_size: int = 13,
-    zoom_level: int = 1,
+    font_size: Optional[int] = 13,
+    zoom_level: Optional[int] = 1,
     paths: Optional[List[str]] = None,
+    terminal_font: Optional[str] = None,
 ) -> Dict[str, bool]:
-    """Configure font size and related settings for all detected VS Code variants."""
+    """Configure settings for all detected VS Code variants.
+
+    A value of None means "leave that setting untouched".
+    """
     target_paths = paths if paths is not None else get_target_settings_paths()
     results: Dict[str, bool] = {}
 
-    settings_to_apply = {
+    candidates = {
         "editor.fontSize": font_size,
         "window.zoomLevel": zoom_level,
+        "terminal.integrated.fontFamily": terminal_font,
     }
+    settings_to_apply = {k: v for k, v in candidates.items() if v is not None}
 
     for path in target_paths:
         dir_name = os.path.dirname(path)
@@ -71,7 +77,8 @@ def configure_vscode_settings(
             success = update_settings(path, settings_to_apply)
             results[path] = success
             if success:
-                print(f"[✓] 已成功配置 {path} (editor.fontSize = {font_size}, window.zoomLevel = {zoom_level})")
+                applied = ", ".join(f"{k} = {v}" for k, v in settings_to_apply.items())
+                print(f"[✓] 已成功配置 {path} ({applied})")
             else:
                 print(f"[!] 配置失敗: {path}", file=sys.stderr)
         else:
@@ -94,15 +101,25 @@ def main() -> int:
         default=1,
         help="視窗縮放比例 (預設為 1)",
     )
+    parser.add_argument(
+        "--terminal-font-only",
+        metavar="FONT",
+        help="僅設定 terminal.integrated.fontFamily，不更動編輯器字型與縮放",
+    )
     args = parser.parse_args()
 
     print("====================================================")
     print("      VS Code / VS Code Insiders Settings Setup     ")
     print("====================================================")
-    print(f"[*] 設定項目: editor.fontSize = {args.font_size}")
-    print(f"[*] 設定項目: window.zoomLevel = {args.zoom_level}")
 
-    results = configure_vscode_settings(font_size=args.font_size, zoom_level=args.zoom_level)
+    if args.terminal_font_only:
+        font_size, zoom_level, terminal_font = None, None, args.terminal_font_only
+    else:
+        font_size, zoom_level, terminal_font = args.font_size, args.zoom_level, None
+
+    results = configure_vscode_settings(
+        font_size=font_size, zoom_level=zoom_level, terminal_font=terminal_font
+    )
     if any(results.values()):
         print("[✓] VS Code 設定檔更新完成！")
         return 0

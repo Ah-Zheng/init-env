@@ -98,6 +98,33 @@ class TestVSCodeSettings(unittest.TestCase):
         self.assertEqual(data.get("editor.fontSize"), 15)
         self.assertEqual(data.get("window.zoomLevel"), 2)
 
+    def test_terminal_font_only_leaves_editor_settings_untouched(self):
+        with open(self.settings_file, "w", encoding="utf-8") as f:
+            json.dump({"editor.fontSize": 20, "window.zoomLevel": 3}, f)
+
+        res = configure_vscode_settings(
+            font_size=None, zoom_level=None, terminal_font="MesloLGS NF", paths=[self.settings_file]
+        )
+        self.assertEqual(res, {self.settings_file: True})
+
+        with open(self.settings_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        self.assertEqual(data["editor.fontSize"], 20)
+        self.assertEqual(data["window.zoomLevel"], 3)
+        self.assertEqual(data["terminal.integrated.fontFamily"], "MesloLGS NF")
+
+    def test_terminal_font_does_not_overwrite_corrupted_settings(self):
+        corrupt_content = "{ INVALID_JSON"
+        with open(self.settings_file, "w", encoding="utf-8") as f:
+            f.write(corrupt_content)
+
+        res = configure_vscode_settings(
+            font_size=None, zoom_level=None, terminal_font="MesloLGS NF", paths=[self.settings_file]
+        )
+        self.assertEqual(res, {self.settings_file: False})
+        with open(self.settings_file, "r", encoding="utf-8") as f:
+            self.assertEqual(f.read(), corrupt_content)
+
 
 if __name__ == "__main__":
     unittest.main()
