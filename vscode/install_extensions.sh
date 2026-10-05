@@ -48,6 +48,7 @@ echo "[*] 開始讀取 extensions.txt 並批次安裝外掛..."
 
 TOTAL_COUNT=0
 SUCCESS_COUNT=0
+FAILED_EXTS=()
 
 while IFS= read -r line || [ -n "$line" ]; do
     # 移除行尾註解與前後多餘空白
@@ -65,22 +66,22 @@ while IFS= read -r line || [ -n "$line" ]; do
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     else
         echo "[!] 安裝失敗: $ext"
+        FAILED_EXTS+=("$ext")
     fi
 done < "$EXTENSIONS_FILE"
 
 echo "===================================================="
-echo "[✓] VS Code Insiders 擴充套件安裝完畢！(成功: ${SUCCESS_COUNT}/${TOTAL_COUNT})"
+echo "VS Code Insiders 擴充套件安裝流程結束 (成功: ${SUCCESS_COUNT}/${TOTAL_COUNT})"
 echo "===================================================="
 
 # ------------------------------------------------------------------------------
 # 3. 配置 VS Code / VS Code Insiders 偏好設定 (如 editor.fontSize 與 window.zoomLevel)
 # ------------------------------------------------------------------------------
-SETTINGS_SCRIPT="$(dirname "$0")/setup_settings.sh"
-if [ -x "$SETTINGS_SCRIPT" ]; then
-    echo ""
-    "$SETTINGS_SCRIPT"
-elif [ -f "$(dirname "$0")/configure_settings.py" ]; then
-    echo ""
-    python3 "$(dirname "$0")/configure_settings.py"
-fi
+# 設定失敗不應被擴充套件的安裝結果掩蓋，因此先執行設定，最後再依安裝結果決定結束碼
+echo ""
+bash "$(dirname "$0")/setup_settings.sh"
 
+if [ "${#FAILED_EXTS[@]}" -gt 0 ]; then
+    echo "[!] 以下 ${#FAILED_EXTS[@]} 個外掛安裝失敗: ${FAILED_EXTS[*]}"
+    exit 1
+fi
