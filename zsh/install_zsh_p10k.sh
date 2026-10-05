@@ -133,29 +133,11 @@ else
 fi
 
 # 5.2 更新 plugins (外掛清單) 陣列
-# 僅保留 git, zsh-autosuggestions, zsh-syntax-highlighting
-if grep -q "^plugins=(" "$ZSHRC"; then
-    echo "[*] 正在將新外掛加入現有的 plugins 陣列中..."
-    current_plugins=$(grep "^plugins=(" "$ZSHRC" | sed -E 's/plugins=\((.*)\)/\1/')
-    new_plugins="$current_plugins"
-
-    # 檢查並追加外掛清單
-    for plugin in git zsh-autosuggestions zsh-syntax-highlighting; do
-        if [[ ! " $current_plugins " =~ " $plugin " ]]; then
-            new_plugins="$new_plugins $plugin"
-        fi
-    done
-    new_plugins=$(echo "$new_plugins" | xargs)
-
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        sed -i '' "s/^plugins=(.*/plugins=($new_plugins)/" "$ZSHRC"
-    else
-        sed -i "s/^plugins=(.*/plugins=($new_plugins)/" "$ZSHRC"
-    fi
-else
-    echo "[*] 找不到 plugins 設定，直接建立完整的 plugins 陣列..."
-    echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)" >> "$ZSHRC"
-fi
+# 僅保留 git, zsh-autosuggestions, zsh-syntax-highlighting（支援單行與多行寫法）
+# shellcheck source=zsh/lib_plugins.sh
+source "$(dirname "$0")/lib_plugins.sh"
+echo "[*] 正在確認 plugins 陣列包含所需外掛..."
+ensure_plugins "$ZSHRC" git zsh-autosuggestions zsh-syntax-highlighting
 
 # 5.3 新增 eza 別名 (Aliases) 到 .zshrc
 if ! grep -q "alias ls=\"eza" "$ZSHRC"; then
