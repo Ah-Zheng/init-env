@@ -8,6 +8,9 @@
 # 「set -e」表示當腳本中任何一個指令執行失敗時，腳本會立即中斷並退出。
 set -e
 
+# 取得本腳本所在目錄，讓使用者在任何工作目錄下執行都能找到子腳本
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # 1. 定義可選的腳本選項名稱
 OPTIONS=(
     "安裝 Homebrew 與軟體/CLI 工具 (brew/)"
@@ -100,8 +103,8 @@ CURRENT_STEP=1
 if [ "${STATES[0]}" -eq 1 ]; then
     echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：安裝 Homebrew 與軟體/CLI 工具..."
     # 確保子腳本具有執行權限
-    chmod +x ./brew/install.sh
-    ./brew/install.sh
+    chmod +x "$SCRIPT_DIR/brew/install.sh"
+    "$SCRIPT_DIR/brew/install.sh"
     CURRENT_STEP=$((CURRENT_STEP+1))
     echo "----------------------------------------------------"
 fi
@@ -109,8 +112,8 @@ fi
 # 5.2 執行 VS Code Insiders 擴充套件與設定安裝
 if [ "${STATES[1]}" -eq 1 ]; then
     echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：安裝 VS Code Insiders 擴充套件與偏好設定..."
-    chmod +x ./vscode/install_extensions.sh
-    ./vscode/install_extensions.sh
+    chmod +x "$SCRIPT_DIR/vscode/install_extensions.sh"
+    "$SCRIPT_DIR/vscode/install_extensions.sh"
     CURRENT_STEP=$((CURRENT_STEP+1))
     echo "----------------------------------------------------"
 fi
@@ -118,8 +121,8 @@ fi
 # 5.3 執行 Zsh 美化設定
 if [ "${STATES[2]}" -eq 1 ]; then
     echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：設定 Zsh 終端機與主題..."
-    chmod +x ./zsh/install_zsh_p10k.sh
-    ./zsh/install_zsh_p10k.sh
+    chmod +x "$SCRIPT_DIR/zsh/install_zsh_p10k.sh"
+    "$SCRIPT_DIR/zsh/install_zsh_p10k.sh"
     CURRENT_STEP=$((CURRENT_STEP+1))
     echo "----------------------------------------------------"
 fi
@@ -127,8 +130,8 @@ fi
 # 5.4 執行 Git 使用者與別名配置
 if [ "${STATES[3]}" -eq 1 ]; then
     echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：配置 Git 資訊與常用別名..."
-    chmod +x ./git/setup_git.sh
-    ./git/setup_git.sh
+    chmod +x "$SCRIPT_DIR/git/setup_git.sh"
+    "$SCRIPT_DIR/git/setup_git.sh"
     CURRENT_STEP=$((CURRENT_STEP+1))
     echo "----------------------------------------------------"
 fi
