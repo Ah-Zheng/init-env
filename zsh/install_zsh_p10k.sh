@@ -8,6 +8,9 @@
 # 「set -e」表示當腳本中任何一個指令執行失敗時，腳本會立即中斷並退出。
 set -e
 
+# shellcheck source=lib/common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
+
 echo "===================================================="
 echo "   Zsh + Oh My Zsh + Powerlevel10k Auto Installer   "
 echo "===================================================="
@@ -17,10 +20,10 @@ echo "===================================================="
 # ------------------------------------------------------------------------------
 # 檢查 Zsh
 if ! command -v zsh &> /dev/null; then
-    echo "[*] 偵測到系統未安裝 Zsh，開始安裝..."
+    log_info "偵測到系統未安裝 Zsh，開始安裝..."
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if ! command -v brew &> /dev/null; then
-            echo "[!] 偵測不到 Homebrew。請先安裝 Homebrew (https://brew.sh/) 後再試。"
+            log_warn "偵測不到 Homebrew。請先安裝 Homebrew (https://brew.sh/) 後再試。"
             exit 1
         fi
         brew install zsh
@@ -30,41 +33,41 @@ if ! command -v zsh &> /dev/null; then
         elif command -v yum &> /dev/null; then
             sudo yum install -y zsh git curl
         else
-            echo "[!] 找不到支援的 Linux 套件管理器 (apt-get 或 yum)。請手動安裝 Zsh、Git 和 Curl。"
+            log_warn "找不到支援的 Linux 套件管理器 (apt-get 或 yum)。請手動安裝 Zsh、Git 和 Curl。"
             exit 1
         fi
     else
-        echo "[!] 不支援的作業系統。請手動安裝 Zsh 之後再執行此腳本。"
+        log_warn "不支援的作業系統。請手動安裝 Zsh 之後再執行此腳本。"
         exit 1
     fi
 else
-    echo "[✓] Zsh 已經安裝完成。"
+    log_ok "Zsh 已經安裝完成。"
 fi
 
 # 檢查與安裝 eza
 if ! command -v eza &> /dev/null; then
-    echo "[*] 偵測到系統未安裝 eza，開始安裝..."
+    log_info "偵測到系統未安裝 eza，開始安裝..."
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if command -v brew &> /dev/null; then
             brew install eza
         else
-            echo "[!] 找不到 Homebrew，跳過自動安裝 eza。請於後續手動安裝。"
+            log_warn "找不到 Homebrew，跳過自動安裝 eza。請於後續手動安裝。"
         fi
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        echo "[*] Linux 環境下請參考官方安裝指南安裝 eza: https://github.com/eza-community/eza"
+        log_info "Linux 環境下請參考官方安裝指南安裝 eza: https://github.com/eza-community/eza"
     fi
 else
-    echo "[✓] eza 已經安裝完成。"
+    log_ok "eza 已經安裝完成。"
 fi
 
 # ------------------------------------------------------------------------------
 # 2. 安裝 Oh My Zsh 框架
 # ------------------------------------------------------------------------------
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "[*] 開始安裝 Oh My Zsh 框架..."
+    log_info "開始安裝 Oh My Zsh 框架..."
     RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
-    echo "[✓] Oh My Zsh 已經安裝完成。"
+    log_ok "Oh My Zsh 已經安裝完成。"
 fi
 
 # ------------------------------------------------------------------------------
@@ -72,10 +75,10 @@ fi
 # ------------------------------------------------------------------------------
 P10K_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 if [ ! -d "$P10K_DIR" ]; then
-    echo "[*] 開始安裝 Powerlevel10k 佈景主題..."
+    log_info "開始安裝 Powerlevel10k 佈景主題..."
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
 else
-    echo "[✓] Powerlevel10k 主題已經安裝。"
+    log_ok "Powerlevel10k 主題已經安裝。"
 fi
 
 # ------------------------------------------------------------------------------
@@ -85,19 +88,19 @@ fi
 # 4.1 zsh-autosuggestions (歷史指令自動提示)
 AUTOSUGGEST_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 if [ ! -d "$AUTOSUGGEST_DIR" ]; then
-    echo "[*] 開始安裝 zsh-autosuggestions 外掛..."
+    log_info "開始安裝 zsh-autosuggestions 外掛..."
     git clone https://github.com/zsh-users/zsh-autosuggestions "$AUTOSUGGEST_DIR"
 else
-    echo "[✓] zsh-autosuggestions 外掛已安裝。"
+    log_ok "zsh-autosuggestions 外掛已安裝。"
 fi
 
 # 4.2 zsh-syntax-highlighting (終端機語法高亮)
 SYNTAX_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 if [ ! -d "$SYNTAX_DIR" ]; then
-    echo "[*] 開始安裝 zsh-syntax-highlighting 外掛..."
+    log_info "開始安裝 zsh-syntax-highlighting 外掛..."
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "$SYNTAX_DIR"
 else
-    echo "[✓] zsh-syntax-highlighting 外掛已安裝。"
+    log_ok "zsh-syntax-highlighting 外掛已安裝。"
 fi
 
 
@@ -110,25 +113,25 @@ ZSHRC="$HOME/.zshrc"
 # 備份原有的 .zshrc 以防萬一
 if [ -f "$ZSHRC" ]; then
     BACKUP_ZSHRC="$ZSHRC.backup.$(date +%Y%m%d%H%M%S)"
-    echo "[*] 正在將現有的 .zshrc 備份至 $BACKUP_ZSHRC"
+    log_info "正在將現有的 .zshrc 備份至 $BACKUP_ZSHRC"
     cp "$ZSHRC" "$BACKUP_ZSHRC"
 else
-    echo "[*] 建立新的 .zshrc 檔案..."
+    log_info "建立新的 .zshrc 檔案..."
     touch "$ZSHRC"
 fi
 
-echo "[*] 開始配置 .zshrc 檔案內容..."
+log_info "開始配置 .zshrc 檔案內容..."
 
 # 5.1 修改或新增 ZSH_THEME 主題設定
 if grep -q "^ZSH_THEME=" "$ZSHRC"; then
-    echo "[*] 正在更新 ZSH_THEME 為 powerlevel10k..."
+    log_info "正在更新 ZSH_THEME 為 powerlevel10k..."
     if [[ "$OSTYPE" == "darwin"* ]]; then
         sed -i '' 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC"
     else
         sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC"
     fi
 else
-    echo "[*] 找不到 ZSH_THEME 設定，直接於結尾追加..."
+    log_info "找不到 ZSH_THEME 設定，直接於結尾追加..."
     echo 'ZSH_THEME="powerlevel10k/powerlevel10k"' >> "$ZSHRC"
 fi
 
@@ -136,12 +139,12 @@ fi
 # 僅保留 git, zsh-autosuggestions, zsh-syntax-highlighting（支援單行與多行寫法）
 # shellcheck source=zsh/lib_plugins.sh
 source "$(dirname "$0")/lib_plugins.sh"
-echo "[*] 正在確認 plugins 陣列包含所需外掛..."
+log_info "正在確認 plugins 陣列包含所需外掛..."
 ensure_plugins "$ZSHRC" git zsh-autosuggestions zsh-syntax-highlighting
 
 # 5.3 新增 eza 別名 (Aliases) 到 .zshrc
 if ! grep -q "alias ls=\"eza" "$ZSHRC"; then
-    echo "[*] 正在為 eza 設定常用別名 (ls, ll, la, lt)..."
+    log_info "正在為 eza 設定常用別名 (ls, ll, la, lt)..."
     cat << 'EOF' >> "$ZSHRC"
 
 # eza 別名設定 (現代化的 ls 替代品)
@@ -156,7 +159,7 @@ fi
 
 # 5.4 新增 AI Skills 自動同步設定到 .zshrc (支援 Antigravity CLI & Gemini CLI)
 if ! grep -q "AI_SKILLS_DIR" "$ZSHRC"; then
-    echo "[*] 正在為 AI Skills 設定自動同步 Hook 與別名..."
+    log_info "正在為 AI Skills 設定自動同步 Hook 與別名..."
     cat << 'EOF' >> "$ZSHRC"
 
 # ==============================================================================
@@ -175,7 +178,7 @@ fi
 # ------------------------------------------------------------------------------
 # 5.5 配置 VS Code / VS Code Insiders 終端機字型 (避免 P10k 圖示破圖)
 # ------------------------------------------------------------------------------
-echo "[*] 正在為 VS Code / VS Code Insiders 配置終端機字型 (MesloLGS NF)..."
+log_info "正在為 VS Code / VS Code Insiders 配置終端機字型 (MesloLGS NF)..."
 python3 "$(dirname "$0")/../vscode/configure_settings.py" --terminal-font-only "MesloLGS NF"
 
 # ------------------------------------------------------------------------------
@@ -191,10 +194,10 @@ else
 fi
 
 if [ "$CURRENT_SHELL" != "$ZSH_PATH" ]; then
-    echo "[*] 正在將您的預設 Shell 切換為 Zsh..."
+    log_info "正在將您的預設 Shell 切換為 Zsh..."
     chsh -s "$ZSH_PATH"
 else
-    echo "[✓] Zsh 已經是您的預設 Shell。"
+    log_ok "Zsh 已經是您的預設 Shell。"
 fi
 
 echo "===================================================="

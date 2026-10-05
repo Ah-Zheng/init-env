@@ -7,6 +7,9 @@
 # 「set -e」表示當腳本中任何一個指令執行失敗時，腳本會立即中斷並退出。
 set -e
 
+# shellcheck source=lib/common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
+
 echo "===================================================="
 echo "          Git 基本資訊與快捷指令配置腳本            "
 echo "===================================================="
@@ -57,9 +60,9 @@ if [[ "$UPDATE_CONF" =~ ^[Yy]$ ]]; then
 
     if [ -n "$GIT_NAME" ]; then
         git config --global user.name "$GIT_NAME"
-        echo "[✓] 已將 user.name 設定為: $GIT_NAME"
+        log_ok "已將 user.name 設定為: $GIT_NAME"
     else
-        echo "[*] 未輸入內容，保留原本設定 ($CURRENT_NAME)。"
+        log_info "未輸入內容，保留原本設定 ($CURRENT_NAME)。"
     fi
 
     # 詢問 Email，若已有設定，在提示中顯示目前設定值
@@ -71,9 +74,9 @@ if [[ "$UPDATE_CONF" =~ ^[Yy]$ ]]; then
 
     if [ -n "$GIT_EMAIL" ]; then
         git config --global user.email "$GIT_EMAIL"
-        echo "[✓] 已將 user.email 設定為: $GIT_EMAIL"
+        log_ok "已將 user.email 設定為: $GIT_EMAIL"
     else
-        echo "[*] 未輸入內容，保留原本設定 ($CURRENT_EMAIL)。"
+        log_info "未輸入內容，保留原本設定 ($CURRENT_EMAIL)。"
     fi
 fi
 
@@ -81,7 +84,7 @@ fi
 # 3. 配置 Git 快捷指令 (Aliases)
 # ------------------------------------------------------------------------------
 echo "===================================================="
-echo "[*] 正在設定 Git 快捷指令 (Aliases)..."
+log_info "正在設定 Git 快捷指令 (Aliases)..."
 
 # 「git config --global alias.<縮寫> <完整指令內容>」
 # 設定完後即可使用 `git cm` 代替 `git commit -m`
@@ -96,7 +99,7 @@ git config --global alias.pp "pull -p"
 git config --global alias.r1 "reset HEAD~1"
 git config --global alias.rh "reset --hard"
 git config --global alias.cp "cherry-pick"
-echo "[✓] 已設定 alias:
+log_ok "已設定 alias:
 cm = commit -m,
 st = status,
 co = checkout,
@@ -120,5 +123,5 @@ cp = cherry-pick
 # ------------------------------------------------------------------------------
 
 echo "===================================================="
-echo "[✓] Git 基本配置設定完成！"
+log_ok "Git 基本配置設定完成！"
 echo "===================================================="

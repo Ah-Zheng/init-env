@@ -11,6 +11,9 @@ set -e
 # 取得本腳本所在目錄，讓使用者在任何工作目錄下執行都能找到子腳本
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# shellcheck source=lib/common.sh
+source "$SCRIPT_DIR/lib/common.sh"
+
 # 1. 定義可選的腳本選項名稱
 OPTIONS=(
     "安裝 Homebrew 與軟體/CLI 工具 (brew/)"
@@ -70,7 +73,7 @@ while true; do
             exit 0
             ;;
         *)
-            echo "[!] 無效的輸入，請按任意鍵重新輸入..."
+            log_warn "無效的輸入，請按任意鍵重新輸入..."
             # 讀取單一鍵以暫停畫面，讓使用者看清錯誤訊息
             read -n 1
             ;;

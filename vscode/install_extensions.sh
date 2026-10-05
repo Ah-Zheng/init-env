@@ -8,6 +8,9 @@
 # 「set -e」表示當任何指令執行失敗時，腳本會立即中斷並退出。
 set -e
 
+# shellcheck source=lib/common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
+
 echo "===================================================="
 echo "       VS Code Insiders Extensions Installer        "
 echo "===================================================="
@@ -27,12 +30,12 @@ elif [ -x "$VSCODE_INSIDERS_APP/Contents/Resources/app/bin/code" ]; then
 fi
 
 if [ -z "$CLI_BIN" ]; then
-    echo "[!] 找不到 VS Code Insiders 命令列工具 (code-insiders)。"
+    log_warn "找不到 VS Code Insiders 命令列工具 (code-insiders)。"
     echo "    請確認已先透過「brew/」安裝 VS Code Insiders (或執行 ./brew/install.sh)。"
     exit 1
 fi
 
-echo "[✓] 找到 VS Code Insiders CLI: $CLI_BIN"
+log_ok "找到 VS Code Insiders CLI: $CLI_BIN"
 
 # ------------------------------------------------------------------------------
 # 2. 讀取清單並批次安裝擴充套件
@@ -40,11 +43,11 @@ echo "[✓] 找到 VS Code Insiders CLI: $CLI_BIN"
 EXTENSIONS_FILE="$(dirname "$0")/extensions.txt"
 
 if [ ! -f "$EXTENSIONS_FILE" ]; then
-    echo "[!] 找不到擴充套件清單檔案: $EXTENSIONS_FILE"
+    log_warn "找不到擴充套件清單檔案: $EXTENSIONS_FILE"
     exit 1
 fi
 
-echo "[*] 開始讀取 extensions.txt 並批次安裝外掛..."
+log_info "開始讀取 extensions.txt 並批次安裝外掛..."
 
 TOTAL_COUNT=0
 SUCCESS_COUNT=0
@@ -65,7 +68,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     if "$CLI_BIN" --install-extension "$ext" --force; then
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     else
-        echo "[!] 安裝失敗: $ext"
+        log_warn "安裝失敗: $ext"
         FAILED_EXTS+=("$ext")
     fi
 done < "$EXTENSIONS_FILE"
@@ -82,6 +85,6 @@ echo ""
 bash "$(dirname "$0")/setup_settings.sh"
 
 if [ "${#FAILED_EXTS[@]}" -gt 0 ]; then
-    echo "[!] 以下 ${#FAILED_EXTS[@]} 個外掛安裝失敗: ${FAILED_EXTS[*]}"
+    log_warn "以下 ${#FAILED_EXTS[@]} 個外掛安裝失敗: ${FAILED_EXTS[*]}"
     exit 1
 fi
