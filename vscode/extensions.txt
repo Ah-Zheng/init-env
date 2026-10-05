@@ -10,6 +10,7 @@ ms-ceintl.vscode-language-pack-zh-hant  # 繁體中文語言套件 (Traditional 
 # 語法支援與開發工具
 vue.volar                               # Vue 官方支援套件 (Vue Language Features / Volar)
 typescriptteam.native-preview           # TypeScript 語言支援預覽 (Native Preview)
+ms-vscode.vscode-typescript-next        # JavaScript and TypeScript Nightly
 xabikos.javascriptsnippets              # JavaScript (ES6) 程式碼片段速查
 dbaeumer.vscode-eslint                  # ESLint 語法檢查與修正
 
@@ -22,6 +23,7 @@ johnpapa.winteriscoming                 # Winter is Coming 主題色彩
 oderwat.indent-rainbow                  # 縮排彩虹色彩標示 (indent-rainbow)
 shardulm94.trailing-spaces              # 行末多餘空白高亮標示 (Trailing Spaces)
 bierner.markdown-mermaid                # Mermaid 圖表預覽
+pkief.material-icon-theme               # 目錄 Icon 主題 (Material Icon Theme)
 
 # Git 輔助工具
-eamodio.gitlens                         # GitLens — Git supercharged 
+eamodio.gitlens                         # GitLens — Git supercharged
