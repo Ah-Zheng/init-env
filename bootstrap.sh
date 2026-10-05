@@ -22,6 +22,20 @@ OPTIONS=(
     "配置 Git 使用者資訊與常用別名 (git/)"
 )
 
+# 1.1 各選項執行時的提示文字，以及對應的子腳本路徑（索引與 OPTIONS 一一對應）
+RUN_LABELS=(
+    "安裝 Homebrew 與軟體/CLI 工具"
+    "安裝 VS Code Insiders 擴充套件與偏好設定"
+    "設定 Zsh 終端機與主題"
+    "配置 Git 資訊與常用別名"
+)
+SCRIPTS=(
+    "brew/install.sh"
+    "vscode/install_extensions.sh"
+    "zsh/install_zsh_p10k.sh"
+    "git/setup_git.sh"
+)
+
 # 2. 定義對應選項的選取狀態：0 代表未選取，1 代表已選取
 # 預設為全未選取 [0, 0, 0, 0]
 STATES=(0 0 0 0)
@@ -96,48 +110,22 @@ for state in "${STATES[@]}"; do
 done
 
 if [ "$SELECTED_COUNT" -eq 0 ]; then
-    echo "[*] 您沒有勾選任何項目，安裝結束。"
+    log_info "您沒有勾選任何項目，安裝結束。"
     exit 0
 fi
 
 CURRENT_STEP=1
 
-# 5.1 執行 Homebrew 與軟體/CLI 工具安裝
-if [ "${STATES[0]}" -eq 1 ]; then
-    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：安裝 Homebrew 與軟體/CLI 工具..."
+for i in "${!SCRIPTS[@]}"; do
+    [ "${STATES[$i]}" -eq 1 ] || continue
+
+    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：${RUN_LABELS[$i]}..."
     # 確保子腳本具有執行權限
-    chmod +x "$SCRIPT_DIR/brew/install.sh"
-    "$SCRIPT_DIR/brew/install.sh"
+    chmod +x "$SCRIPT_DIR/${SCRIPTS[$i]}"
+    "$SCRIPT_DIR/${SCRIPTS[$i]}"
     CURRENT_STEP=$((CURRENT_STEP+1))
     echo "----------------------------------------------------"
-fi
-
-# 5.2 執行 VS Code Insiders 擴充套件與設定安裝
-if [ "${STATES[1]}" -eq 1 ]; then
-    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：安裝 VS Code Insiders 擴充套件與偏好設定..."
-    chmod +x "$SCRIPT_DIR/vscode/install_extensions.sh"
-    "$SCRIPT_DIR/vscode/install_extensions.sh"
-    CURRENT_STEP=$((CURRENT_STEP+1))
-    echo "----------------------------------------------------"
-fi
-
-# 5.3 執行 Zsh 美化設定
-if [ "${STATES[2]}" -eq 1 ]; then
-    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：設定 Zsh 終端機與主題..."
-    chmod +x "$SCRIPT_DIR/zsh/install_zsh_p10k.sh"
-    "$SCRIPT_DIR/zsh/install_zsh_p10k.sh"
-    CURRENT_STEP=$((CURRENT_STEP+1))
-    echo "----------------------------------------------------"
-fi
-
-# 5.4 執行 Git 使用者與別名配置
-if [ "${STATES[3]}" -eq 1 ]; then
-    echo ">>> [${CURRENT_STEP}/${SELECTED_COUNT}] 執行中：配置 Git 資訊與常用別名..."
-    chmod +x "$SCRIPT_DIR/git/setup_git.sh"
-    "$SCRIPT_DIR/git/setup_git.sh"
-    CURRENT_STEP=$((CURRENT_STEP+1))
-    echo "----------------------------------------------------"
-fi
+done
 
 echo "===================================================="
 echo "          [✓] 所有選定項目執行完畢！                "
